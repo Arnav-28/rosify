@@ -1,13 +1,10 @@
-# ROS2 Setup and Package Guide
-
-## Table of Contents
-1. [Introduction](#introduction)
-2. [Package Management](#package-management)
-3. [Directory Structure](#directory-structure)
-4. [Troubleshooting](#troubleshooting)
-5. [Resources](#resources)
-
-## Introduction
+# Table of Contents
+### 1. [Introduction and Basics](#ros2-humble-basics)
+### 2. [Package and Directory Management](#package-management)
+### 4. [Control Turtle With Gamepad](#troubleshooting)
+### 5. [Resources](#resources)
+ 
+# ROS2 Humble Basics
 
 This guide provides an overview of ROS2 setup and package management. For installation and detailed instructions, please refer to the official documentation:
 - [ROS2 Installation Guide](https://docs.ros.org/en/humble/Installation.html)
@@ -47,9 +44,9 @@ cd ~/ros2_ws
 colcon build
 ```
 
-## Package Management
+# Package Management
 
-### Creating Packages
+## Creating Packages
 1. Create a workspace and navigate to the src directory:
 ```bash
 mkdir -p ~/ros2_ws/src
@@ -65,7 +62,7 @@ ros2 pkg create --build-type ament_python <package_name>
 ros2 pkg create --build-type ament_cmake <package_name>
 ```
 
-### Package Structure
+## Package Structure
 ```
 <package_name>/
 ├── CMakeLists.txt           # (C++) Build system instructions
@@ -73,12 +70,12 @@ ros2 pkg create --build-type ament_cmake <package_name>
 └── setup.py                 # (Python) Build system instructions
 ```
 
-### Important Files
+## Important Files
 1. **package.xml**: Package metadata and dependencies
 2. **CMakeLists.txt**: Build instructions (C++)
 3. **setup.py**: Package installation configuration (Python)
 
-### Building Packages
+## Building Packages
 ```bash
 # Build all packages in workspace
 cd ~/ros2_ws
@@ -125,6 +122,8 @@ ros2 run <package_name> <node_name>
 # Launch using a launch file
 ros2 launch <package_name> <launch_file>
 ```
+# Control Turtle with a Controller
+
 
 ## Troubleshooting
 
