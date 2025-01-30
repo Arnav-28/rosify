@@ -122,8 +122,90 @@ ros2 run <package_name> <node_name>
 # Launch using a launch file
 ros2 launch <package_name> <launch_file>
 ```
-# Control Turtle with a Controller
+# Control Turtle with a Controller/Gamepad
 
+Control the ROS2 turtlesim using a gamepad/joystick controller. This package provides an interface between your game controller and the turtle simulator, allowing for intuitive control of the turtle's movement.
+
+## Prerequisites
+
+- ROS2 Humble installed on Ubuntu 22.04
+- USB gamepad/joystick (Xbox, PlayStation, or similar controllers)
+- Required ROS2 packages:
+  ```bash
+  sudo apt-get install ros-humble-joy ros-humble-teleop-twist-joy
+  ```
+
+## Installation
+
+1. Create a ROS2 workspace (if you don't have one):
+   ```bash
+   mkdir -p ~/ros2_ws/src
+   cd ~/ros2_ws/src
+   ```
+
+2. Clone this repository:
+   ```bash
+   git clone git@github.com:Arnav-28/rosify.git
+   cd ~/ros2_ws
+   ```
+
+3. Build the package:
+   ```bash
+   colcon build --packages-select rosify
+   source install/setup.bash
+   ```
+
+## Package Structure
+
+```
+rosify/
+├── CMakeLists.txt           # Build system instructions
+├── package.xml              # Package metadata and dependencies
+├── src/
+│   └── turtleJoy.py  # Main controller node
+├── launch/
+│   └── turtleJoy.launch.py      # Launch file
+└── README.md
+```
+
+## Usage
+
+Launch all required nodes (turtlesim, joy node, and controller) with:
+```bash
+ros2 launch rosify turtleJoy.launch.py
+```
+
+### Controller Mapping
+
+- Left stick vertical: Forward/backward movement
+- Left stick horizontal: Rotation
+- Default speeds can be adjusted in the code:
+  - `linear_speed = 2.0`  # Forward/backward speed
+  - `angular_speed = 2.0` # Rotation speed
+
+## Node Architecture
+
+The system consists of three main nodes:
+
+1. `joy_node`: Reads raw controller input
+2. `turtleJoy`: Converts joystick commands to turtle movement
+3. `turtlesim_node`: The turtle simulator
+
+Data flow:
+```
+USB Controller → joy_node → turtleJoy → turtlesim_node
+```
+
+## Topics
+
+The package uses the following ROS2 topics:
+
+- `/joy` (sensor_msgs/Joy): Raw joystick data
+  - `axes[]`: Joystick axis values (-1.0 to 1.0)
+  - `buttons[]`: Button states (0 or 1)
+- `/turtle1/cmd_vel` (geometry_msgs/Twist): Turtle velocity commands
+  - `linear`: Linear velocity (x, y, z)
+  - `angular`: Angular velocity (x, y, z)
 
 ## Troubleshooting
 
@@ -136,6 +218,49 @@ ros2 launch <package_name> <launch_file>
    ```bash
    rosdep install --from-paths src --ignore-src -r -y
    ```
+
+3. **Controller not detected**:
+   ```bash
+   # Check available joysticks
+   ls /dev/input/js*
+   
+   # Verify joy node output
+   ros2 topic echo /joy
+   ```
+
+4. **Verify node connections**:
+   ```bash
+   # List all nodes
+   ros2 node list
+   
+   # Check topic connections
+   ros2 topic info /turtle1/cmd_vel
+   ```
+
+4. **Common issues**:
+   - If the controller isn't responding, ensure it's properly connected and recognized by the system
+   - If the turtle isn't moving, check that all nodes are running (`ros2 node list`)
+   - For incorrect movements, verify axis mappings by monitoring the joy topic
+
+## Customization
+
+You can modify the controller behavior by adjusting these parameters in `turtleJoy.py`:
+
+```python
+self.linear_speed = 2.0    # Forward/backward speed
+self.angular_speed = 2.0   # Rotation speed
+self.linear_axis = 1       # Axis number for forward/backward
+self.angular_axis = 0      # Axis number for rotation
+```
+
+## Troubleshooting
+
+## Acknowledgments
+
+- ROS2 Development Team
+- Turtlesim Package Developers
+- Joy Package Maintainers
+
 ## Resources
 ### Internet Gems:
 
