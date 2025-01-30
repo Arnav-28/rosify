@@ -252,9 +252,6 @@ self.angular_speed = 2.0   # Rotation speed
 self.linear_axis = 1       # Axis number for forward/backward
 self.angular_axis = 0      # Axis number for rotation
 ```
-
-## Troubleshooting
-
 ## Acknowledgments
 
 - ROS2 Development Team
