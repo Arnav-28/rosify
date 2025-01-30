@@ -15,10 +15,21 @@ def generate_launch_description():
     # Process the URDF file
     pkg_path = os.path.join(get_package_share_directory(package_name))
   
+    teleop_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            os.path.join(get_package_share_directory('teleop_twist_joy'), 
+            'launch', 'teleop-launch.py')
+        ])
+    )
+  
     turtleJoy_exe_node = Node(
             package='rosify',  # Replace with your package name
             executable='turtleJoy.py',  # Replace with your node's executable name
         )
+    turtlesim_node = Node(
+        package='turtlesim',
+        executable='turtlesim_node'
+    )
     turtlesim_node = Node(
         package='turtlesim',
         executable='turtlesim_node'
@@ -28,5 +39,6 @@ def generate_launch_description():
     # Launch!
     return LaunchDescription([
         turtlesim_node,
-        turtleJoy_exe_node
+        turtleJoy_exe_node,
+        teleop_launch
     ])
